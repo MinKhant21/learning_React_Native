@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Pressable } from "react-native";
 import React from "react";
 import { Image } from "expo-image";
 
@@ -6,17 +6,22 @@ interface Props {
   id: string;
   name: string;
   image: any;
+  select: string;
+  selectActionHandler: (id: string) => void;
 }
 
-const Category = ({ id, name, image }: Props) => {
+const Category = ({ id, name, image, select, selectActionHandler }: Props) => {
   return (
     <View style={styles.container}>
-      <Image
-        source={image}
-        style={styles.image}
-        contentFit="cover"
-        transition={1000}
-      />
+      <Pressable onPress={() => selectActionHandler(id)}>
+        <Image
+          source={image}
+          style={[styles.image, select == id && styles.imageActive]}
+          contentFit="cover"
+          transition={1000}
+        />
+      </Pressable>
+
       <Text style={styles.caption}>{name}</Text>
     </View>
   );
@@ -36,6 +41,11 @@ const styles = StyleSheet.create({
   image: {
     width: 55,
     height: 55,
+  },
+  imageActive: {
+    borderColor: "gold",
+    borderWidth: 2,
+    borderRadius: 40,
   },
 });
 

@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Link, useNavigation } from "expo-router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Image } from "expo-image";
 import Cart from "@/components/shop/Cart";
 import Title from "@/components/shop/Title";
@@ -21,6 +21,10 @@ const blurhash =
 
 export default function HomeScreen() {
   const navigation = useNavigation();
+  const [select, setSelect] = useState("uuid1");
+  const selectActionHandler = (id: string) => {
+    setSelect(id);
+  };
   useEffect(() => {
     navigation.setOptions({
       headerShown: false,
@@ -58,7 +62,14 @@ export default function HomeScreen() {
           <View style={styles.categories}>
             <FlashList
               data={categories}
-              renderItem={({ item }) => <Category {...item} />}
+              extraData={select}
+              renderItem={({ item }) => (
+                <Category
+                  {...item}
+                  select={select}
+                  selectActionHandler={selectActionHandler}
+                />
+              )}
               estimatedItemSize={80}
               horizontal
               // Remove ScrollIndicator
